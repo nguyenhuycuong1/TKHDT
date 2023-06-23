@@ -4,7 +4,7 @@ import classNames from 'classnames/bind';
 
 const cx = classNames.bind(styles);
 
-function PDInCart({ data, checked }) {
+function PDInCart({ data, checked, change }) {
     const [amount, setAmount] = useState(1);
     useEffect(() => {
         const formatAmount = () => {
@@ -19,7 +19,12 @@ function PDInCart({ data, checked }) {
         <div className={cx('wrapper', 'row')}>
             <div className="col l-6">
                 <div className={cx('product-info')}>
-                    <input type="checkbox" checked={checked} className={cx('checkbox')}></input>
+                    <input
+                        type="checkbox"
+                        checked={checked}
+                        className={cx('checkbox')}
+                        onChange={(e) => change(e, data)}
+                    ></input>
                     <img className={cx('product-img')} src={data.link_img} alt={data.p_name} />
                     <span className={cx('product-name')}>{data.p_name}</span>
                 </div>

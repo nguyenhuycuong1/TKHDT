@@ -5,12 +5,12 @@ import { useState } from 'react';
 import PDInCart from '~/components/PDInCart';
 const cx = classNames.bind(styles);
 
-const PRODUCT_ITEM = {
-    p_name: 'Apple MacBook Air M1 256GB 2020 I Chính hãng Apple Việt Nam ',
-    price: '18.450.000',
-    discount: 20,
-    link_img: 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/a/i/air_m2.png',
-};
+// const PRODUCT_ITEM = {
+//     p_name: 'Apple MacBook Air M1 256GB 2020 I Chính hãng Apple Việt Nam ',
+//     price: '18.450.000',
+//     discount: 20,
+//     link_img: 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/a/i/air_m2.png',
+// };
 
 const PRODUCT_LIST = [
     {
@@ -58,10 +58,18 @@ function CartPage() {
     const [checked, setChecked] = useState([]);
     const handleCheckAllChange = (e) => {
         if (e.target.checked) {
-            const allProducts = PRODUCT_LIST.map((p) => p.p_name);
+            const allProducts = PRODUCT_LIST.map((p) => p.id);
             setChecked(allProducts);
         } else {
             setChecked([]);
+        }
+    };
+
+    const handleCountryChange = (e, p) => {
+        if (e.target.checked) {
+            setChecked([...checked, p.id]);
+        } else {
+            setChecked(checked.filter((item) => item !== p.id));
         }
     };
 
@@ -89,17 +97,25 @@ function CartPage() {
             </div>
             <div className={cx('list-cart-product')}>
                 {PRODUCT_LIST.map((p) => {
-                    return <PDInCart key={p.id} data={p} checked={checked.includes(p.p_name)} />;
+                    return (
+                        <PDInCart key={p.id} data={p} checked={checked.includes(p.id)} change={handleCountryChange} />
+                    );
                 })}
             </div>
             <div className={cx('footer')}>
                 <div className={cx('')}>
-                    <input type="checkbox" className={cx('checkbox')}></input>
+                    <input
+                        type="checkbox"
+                        id="selectAll"
+                        checked={checked.length === PRODUCT_LIST.length}
+                        onChange={handleCheckAllChange}
+                        className={cx('checkbox')}
+                    ></input>
                     <span>Chọn tất cả</span>
                 </div>
                 <div>
                     <div className={cx('total-price')}>
-                        Tổng sản phẩm {`(0 Sản phẩm): 0`}
+                        Tổng sản phẩm {`( ${checked.length} sản phẩm ): 0`}
                         <span className={cx('vnd')}>₫</span>
                     </div>
                 </div>

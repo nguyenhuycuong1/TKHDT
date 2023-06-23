@@ -1,4 +1,6 @@
 import { CartIcon, GlassIcon, UserCircleIcon } from '~/components/Icons';
+import { useContext } from 'react';
+import { AuthContext } from '~/contexts/AuthContext';
 
 import styles from './Header.module.scss';
 import classNames from 'classnames/bind';
@@ -7,7 +9,7 @@ import { Link } from 'react-router-dom';
 const cx = classNames.bind(styles);
 
 function Header() {
-    const user = 'd';
+    const { user } = useContext(AuthContext);
     return (
         <div className={cx('wrapper')}>
             <div className="grid wide">

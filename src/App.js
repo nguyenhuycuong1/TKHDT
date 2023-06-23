@@ -1,4 +1,8 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
+import { useContext } from 'react';
+
+import { AuthContext } from './contexts/AuthContext';
 
 import DefaultLayout from './layouts/DefaultLayout';
 import HeaderOnly from './layouts/HeaderOnly';
@@ -9,7 +13,7 @@ import ForgotPasswordPage from './pages/ForgotPasswordPage';
 import ProductPage from './pages/ProductPage';
 
 function App() {
-    const user = 'd';
+    const { user } = useContext(AuthContext);
     return (
         <Router>
             <div className="App">
@@ -30,7 +34,7 @@ function App() {
                                     <CartPage />
                                 </HeaderOnly>
                             ) : (
-                                <LoginPage />
+                                <Navigate to="/login" />
                             )
                         }
                     />
