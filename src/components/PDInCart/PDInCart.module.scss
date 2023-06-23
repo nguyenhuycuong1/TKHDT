@@ -1,0 +1,69 @@
+.wrapper {
+    align-items: center;
+    background-color: white;
+    padding: 20px;
+    border: solid 1px #dedede;
+    border-bottom: none;
+}
+
+.product-info {
+    display: flex;
+    align-items: center;
+}
+
+.checkbox {
+    margin-right: 20px;
+}
+
+.product-img {
+    width: 80px;
+    height: auto;
+}
+
+.product-name {
+    margin-left: 20px;
+    max-width: 200px;
+}
+
+.amount-ctrl {
+    display: flex;
+    align-items: center;
+    user-select: none;
+}
+
+.amount {
+    display: inline-block;
+    text-align: center;
+    line-height: 32px;
+    width: 42px;
+    height: 32px;
+    border-top: 1px solid #dedede;
+    border-bottom: 1px solid #dedede;
+}
+
+.amount-btn {
+    width: 32px;
+    height: 32px;
+    font-size: 1.6rem;
+    border: 1px solid #dedede;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.pd-price {
+    line-height: 32px;
+    font-size: 1.4rem;
+}
+
+.delete-pd-btn {
+    background-color: transparent;
+    font-size: 1.6rem;
+    border: none;
+    line-height: 32px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.delete-pd-btn:hover {
+    color: #01c8f7;
+}

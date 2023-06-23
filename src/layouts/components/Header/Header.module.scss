@@ -1,0 +1,82 @@
+.wrapper {
+    height: 64px;
+    background: linear-gradient(90deg, rgba(9, 9, 121, 1) 0%, rgba(0, 212, 255, 1) 100%);
+    position: fixed;
+    top: 0;
+    width: 100%;
+    box-shadow: 0 5px 10px #ccc;
+    z-index: 999;
+}
+.header {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+}
+
+.logo {
+    color: white;
+    font-size: 4rem;
+    margin-left: 16px;
+    line-height: 64px;
+    cursor: pointer;
+    user-select: none;
+    text-decoration: none;
+}
+.search-group {
+    display: flex;
+    align-items: center;
+    height: 32px;
+    padding: 0 8px;
+    background-color: white;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.search-icon path {
+    stroke: rgba(9, 9, 121, 1);
+}
+.search-input {
+    outline: none;
+    border: none;
+    width: 240px;
+    font-size: 1.6rem;
+    padding: 0 8px;
+}
+
+.cart,
+.user {
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.1s linear;
+    padding: 0 6px 0 0;
+    text-decoration: none;
+}
+.cart:hover,
+.user:hover {
+    background-color: rgba(9, 9, 121, 0.2);
+}
+
+.user-service {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-right: 16px;
+}
+
+.user-icon {
+    margin-left: 8px;
+    margin-right: 8px;
+}
+
+.cart-icon {
+    margin-right: 4px;
+}
+
+.user-icon path {
+    stroke: white;
+    stroke-width: 1.5px;
+}
