@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import styles from './PDInCart.module.scss';
 import classNames from 'classnames/bind';
+import { Link } from 'react-router-dom';
 
 const cx = classNames.bind(styles);
 
@@ -25,14 +26,18 @@ function PDInCart({ data, checked, change }) {
                         className={cx('checkbox')}
                         onChange={(e) => change(e, data)}
                     ></input>
-                    <img className={cx('product-img')} src={data.link_img} alt={data.p_name} />
-                    <span className={cx('product-name')}>{data.p_name}</span>
+                    <Link to={`/product/${data.id}`} className={cx('link')}>
+                        <div className={cx('linktopd')}>
+                            <img className={cx('product-img')} src={data.link_img} alt={data.p_name} />
+                            <span className={cx('product-name')}>{data.p_name}</span>
+                        </div>
+                    </Link>
                 </div>
             </div>
             <div className="col l-6">
                 <div className="row">
                     <div className="col l-3">
-                        <span className={cx('pd-price')}>{data.price}</span>
+                        <span className={cx('pd-price')}>{data.price.toLocaleString('vi-VN')}</span>
                     </div>
                     <div className="col l-3">
                         <div className={cx('amount-ctrl')}>
@@ -46,7 +51,7 @@ function PDInCart({ data, checked, change }) {
                         </div>
                     </div>
                     <div className="col l-3">
-                        <span className={cx('pd-price')}>{data.price}</span>
+                        <span className={cx('pd-price')}>{data.price.toLocaleString('vi-VN')}</span>
                     </div>
                     <div className="col l-3">
                         <button className={cx('delete-pd-btn')}>Xóa</button>

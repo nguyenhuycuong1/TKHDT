@@ -1,9 +1,9 @@
 import Header from '../components/Header';
 
-function HeaderOnly({ children }) {
+function HeaderOnly({ children, childPage }) {
     return (
         <div>
-            <Header />
+            <Header childPage={childPage} />
             <div className="bgcolor">{children}</div>
         </div>
     );

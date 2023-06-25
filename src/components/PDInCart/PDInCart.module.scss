@@ -25,6 +25,16 @@
     max-width: 200px;
 }
 
+.link {
+    text-decoration: none;
+}
+
+.linktopd {
+    display: flex;
+    align-items: center;
+    color: black;
+}
+
 .amount-ctrl {
     display: flex;
     align-items: center;

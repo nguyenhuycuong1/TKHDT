@@ -1,0 +1,100 @@
+.wrapper {
+    padding: 24px 16px;
+}
+
+.header-title {
+    color: var(--primary-color);
+    font-weight: 400;
+}
+
+.info-box {
+    background-color: white;
+    width: 100%;
+    min-height: 86px;
+    border: 1px solid #dedede;
+    margin-top: 16px;
+    margin-bottom: -8px;
+    padding: 16px;
+}
+
+.info-box.full {
+    position: relative;
+    padding-top: 32px;
+    min-height: 500px;
+}
+
+.box-title {
+    color: var(--primary-color);
+    margin-bottom: 8px;
+    font-size: 1.8rem;
+    font-weight: 400;
+}
+
+.reveiver-info {
+    font-weight: 600;
+    font-size: 1.6rem;
+}
+
+.receiver-name {
+    margin-right: 8px;
+}
+
+.receiver-title {
+    margin-left: 8px;
+}
+
+.text {
+    font-weight: 400;
+    line-height: 12px;
+}
+
+.total-title {
+    text-align: right !important;
+}
+
+.pds-box {
+    min-height: 360px;
+}
+
+.pruduct-info {
+    margin-top: 32px;
+}
+
+.product-show {
+    display: flex;
+    align-items: center;
+    color: black;
+}
+
+.product-img {
+    width: 80px;
+    height: auto;
+}
+
+.product-name {
+    margin-left: 20px;
+    max-width: 200px;
+}
+
+.ordbtn-box {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 0 0 0;
+    border-top: 1px solid #dedede;
+}
+
+.order-btn {
+    border: none;
+    border-radius: 3px;
+    color: white;
+    font-size: 1.8rem;
+    background-color: #02a0dd;
+    width: 240px;
+    padding: 14px;
+    transition: background-color linear 0.1s;
+}
+.order-btn:hover {
+    cursor: pointer;
+    background-color: #0487cc;
+}

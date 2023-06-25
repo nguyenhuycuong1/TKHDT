@@ -1,6 +1,7 @@
 import styles from './CartPage.module.scss';
 import classNames from 'classnames/bind';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 import PDInCart from '~/components/PDInCart';
 const cx = classNames.bind(styles);
@@ -16,7 +17,7 @@ const PRODUCT_LIST = [
     {
         id: 1,
         p_name: 'Apple MacBook Air M1 256GB 2020 I Chính hãng Apple Việt Nam ',
-        price: '18.450.000',
+        price: 18450000,
         discount: 20,
         link_img: 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/a/i/air_m2.png',
     },
@@ -24,7 +25,7 @@ const PRODUCT_LIST = [
         id: 2,
 
         p_name: 'Apple MacBook Air M1 256GB 2020 I Chính hãng Apple Việt Nam ',
-        price: '18.450.000',
+        price: 18450000,
         discount: 20,
         link_img: 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/a/i/air_m2.png',
     },
@@ -32,7 +33,7 @@ const PRODUCT_LIST = [
         id: 3,
 
         p_name: 'Apple MacBook Air M1 256GB 2020 I Chính hãng Apple Việt Nam ',
-        price: '18.450.000',
+        price: 18450000,
         discount: 20,
         link_img: 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/a/i/air_m2.png',
     },
@@ -40,7 +41,7 @@ const PRODUCT_LIST = [
         id: 4,
 
         p_name: 'Apple MacBook Air M1 256GB 2020 I Chính hãng Apple Việt Nam ',
-        price: '18.450.000',
+        price: 18450000,
         discount: 20,
         link_img: 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/a/i/air_m2.png',
     },
@@ -48,7 +49,7 @@ const PRODUCT_LIST = [
         id: 5,
 
         p_name: 'Apple MacBook Air M1 256GB 2020 I Chính hãng Apple Việt Nam ',
-        price: '18.450.000',
+        price: 18450000,
         discount: 20,
         link_img: 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/a/i/air_m2.png',
     },
@@ -71,6 +72,13 @@ function CartPage() {
         } else {
             setChecked(checked.filter((item) => item !== p.id));
         }
+    };
+
+    const handleClickBuyBtn = () => {
+        if (checked.length === 0) {
+            alert('chua co san pham');
+        }
+        console.log(checked);
     };
 
     return (
@@ -120,7 +128,13 @@ function CartPage() {
                     </div>
                 </div>
                 <div>
-                    <button className={cx('buy-btn')}>Mua Hàng</button>
+                    <Link
+                        to={checked.length > 0 && '/order/sdhfjksdahji'}
+                        className={cx('buy-btn')}
+                        onClick={() => handleClickBuyBtn()}
+                    >
+                        Mua Hàng
+                    </Link>
                 </div>
             </div>
         </div>

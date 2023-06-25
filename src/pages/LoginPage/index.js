@@ -1,25 +1,31 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useState, useContext } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
 import styles from './LoginPage.module.scss';
 import classNames from 'classnames/bind';
 
+import { createAnAccount, loginMethod } from '~/services/userService';
+import { AuthContext } from '~/contexts/AuthContext';
+import { LoginStart, LoginSuccess } from '~/contexts/AuthActions';
+
 const cx = classNames.bind(styles);
 const arr = ['Login', 'Register'];
 function LoginPage() {
+    const navigate = useNavigate();
+    const { dispatch } = useContext(AuthContext);
     const [options, setOptions] = useState('Login');
     const [registerData, setRegisterData] = useState({
         name: '',
         birth: '',
         sex: '',
-        user_name: '',
+        username: '',
         phone_number: '',
         email: '',
         password: '',
     });
 
     const [loginData, setLoginData] = useState({
-        user_name: '',
+        username: '',
         password: '',
     });
 
@@ -30,6 +36,7 @@ function LoginPage() {
             setLoginData(copyData);
         } else {
             registerData[id] = e.target.value;
+
             const copyData = { ...registerData };
             setRegisterData(copyData);
         }
@@ -38,14 +45,14 @@ function LoginPage() {
     const validator = () => {
         let fields = [];
         if (options === 'Login') {
-            fields = ['user_name', 'password'];
+            fields = ['username', 'password'];
             for (let i = 0; i < fields.length; i++) {
                 if (!loginData[fields[i]]) {
                     return false;
                 }
             }
         } else {
-            fields = ['name', 'birth', 'sex', 'user_name', 'phone_number', 'email', 'password'];
+            fields = ['name', 'birth', 'sex', 'username', 'phone_number', 'email', 'password'];
             for (let i = 0; i < fields.length; i++) {
                 if (!registerData[fields[i]]) {
                     return false;
@@ -55,18 +62,34 @@ function LoginPage() {
         return true;
     };
 
-    const handleRegister = () => {
+    const handleRegister = async () => {
         if (validator()) {
-            console.log(registerData);
+            await createAnAccount(registerData).then((res) => {
+                alert(res.data.detail);
+            });
+
+            setRegisterData({
+                name: '',
+                birth: '',
+                sex: '',
+                username: '',
+                phone_number: '',
+                email: '',
+                password: '',
+            });
+            setOptions('Login');
         } else {
             alert('Somthing is wrong');
         }
     };
-    const handleLogin = () => {
+    const handleLogin = async () => {
         if (validator()) {
-            console.log(loginData);
+            dispatch(LoginStart(''));
+            const user = await loginMethod(loginData);
+            dispatch(LoginSuccess(user.data.result));
+            navigate('/');
         } else {
-            alert('Somthing is wrong');
+            alert('Something is wrong');
         }
     };
 
@@ -96,9 +119,9 @@ function LoginPage() {
                     <div className={cx('form-login')}>
                         <input
                             type="text"
-                            value={loginData['user_name']}
+                            value={loginData['username']}
                             className={cx('form-input')}
-                            onChange={(e) => handleOnChangeInput(e, 'user_name')}
+                            onChange={(e) => handleOnChangeInput(e, 'username')}
                             placeholder="Username"
                         ></input>
                         <input
@@ -128,7 +151,9 @@ function LoginPage() {
                             type="text"
                             value={registerData['birth']}
                             className={cx('form-input')}
-                            onChange={(e) => handleOnChangeInput(e, 'birth')}
+                            onChange={(e) => {
+                                handleOnChangeInput(e, 'birth');
+                            }}
                             placeholder="Birth of date"
                         ></input>
                         <select
@@ -139,15 +164,15 @@ function LoginPage() {
                         >
                             <option>-- Select your gender --</option>
 
-                            <option value="male">Male</option>
-                            <option value="female">Female</option>
-                            <option value="other">Other</option>
+                            <option value="MALE">Male</option>
+                            <option value="FEMALE">Female</option>
+                            {/* <option value="other">Other</option> */}
                         </select>
                         <input
                             type="text"
-                            value={registerData['user_name']}
+                            value={registerData['username']}
                             className={cx('form-input')}
-                            onChange={(e) => handleOnChangeInput(e, 'user_name')}
+                            onChange={(e) => handleOnChangeInput(e, 'username')}
                             placeholder="Username"
                         ></input>
                         <input

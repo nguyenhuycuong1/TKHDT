@@ -10,7 +10,7 @@ function ProductItem({ data, className }) {
             <img className={cx('img')} src={data.link_img} alt={data.p_name}></img>
             <h3 className={cx('product-name')}>{data.p_name}</h3>
             <div className={cx('price-group')}>
-                <span className={cx('price')}>{data.price}</span>
+                <span className={cx('price')}>{data.price.toLocaleString('vi-VN')}</span>
                 <span className={cx('vnd')}>₫</span>
             </div>
             <div className={cx('discount')}>Giảm {data.discount}%</div>

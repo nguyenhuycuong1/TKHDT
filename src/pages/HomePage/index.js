@@ -6,7 +6,7 @@ import ProductItem from '~/components/ProductItem';
 const cx = classNames.bind(styles);
 const PRODUCT_ITEM = {
     p_name: 'Apple MacBook Air M1 256GB 2020 I Chính hãng Apple Việt Nam ',
-    price: '18.450.000',
+    price: 18450000,
     discount: 20,
     link_img: 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/a/i/air_m2.png',
 };

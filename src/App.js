@@ -11,6 +11,8 @@ import LoginPage from './pages/LoginPage';
 import CartPage from './pages/CartPage';
 import ForgotPasswordPage from './pages/ForgotPasswordPage';
 import ProductPage from './pages/ProductPage';
+import OrderPage from './pages/OrderPage';
+import ProfilePage from './pages/ProfilePage';
 
 function App() {
     const { user } = useContext(AuthContext);
@@ -27,10 +29,20 @@ function App() {
                         }
                     />
                     <Route
+                        path="/user/profile/:username"
+                        element={
+                            user && (
+                                <HeaderOnly>
+                                    <ProfilePage username={user} />
+                                </HeaderOnly>
+                            )
+                        }
+                    />
+                    <Route
                         path="/cart"
                         element={
                             user ? (
-                                <HeaderOnly>
+                                <HeaderOnly childPage="cart">
                                     <CartPage />
                                 </HeaderOnly>
                             ) : (
@@ -45,6 +57,14 @@ function App() {
                         element={
                             <HeaderOnly>
                                 <ProductPage />
+                            </HeaderOnly>
+                        }
+                    />
+                    <Route
+                        path="/order/:id"
+                        element={
+                            <HeaderOnly childPage="order">
+                                <OrderPage />
                             </HeaderOnly>
                         }
                     />
