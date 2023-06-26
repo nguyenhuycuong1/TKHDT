@@ -1,29 +1,41 @@
+import { useState, useEffect } from 'react';
 import styles from './ProductPage.module.scss';
 import classNames from 'classnames/bind';
+import { getProductsById } from '~/services/userService';
+import { useParams } from 'react-router-dom';
 
 const cx = classNames.bind(styles);
-const PRODUCT_ITEM = {
-    p_name: 'Apple MacBook Air M1 256GB 2020 I Chính hãng Apple Việt Nam ',
-    price: 18450000,
-    discount: 20,
-    link_img: 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/a/i/air_m2.png',
-};
+
 function ProductPage() {
+    const params = useParams();
+    const [formatPrice, setFormatPrice] = useState('');
+    const product_id = params.id;
+    const [product, setProduct] = useState({});
+    useEffect(() => {
+        const getProductItem = async () => {
+            await getProductsById(product_id).then((res) => setProduct(res.data));
+        };
+        getProductItem();
+    }, [product_id]);
+    useEffect(() => {
+        setFormatPrice(Math.floor(product.price));
+    }, [product.price]);
     return (
         <div className={cx('wrapper', 'grid wide')}>
             <div className={cx('product-info-box')}>
                 <div className="row">
                     <div className="col l-5">
                         <div>
-                            <img className={cx('img')} src={PRODUCT_ITEM.link_img} alt={PRODUCT_ITEM.p_name} />
+                            <img className={cx('img')} src={product.image} alt={product.product_name} />
                         </div>
                     </div>
                     <div className={cx('pd-order-box', 'col l-7')}>
-                        <div>
-                            <h2 className={cx('pd-name')}>{PRODUCT_ITEM.p_name}</h2>
+                        <div className={cx('pd-tile')}>
+                            <h2 className={cx('pd-name')}>{product.product_name}</h2>
                         </div>
+                        <div className={cx('pd-description')}>{product.description}</div>
                         <div className={cx('pd-price')}>
-                            <span>{PRODUCT_ITEM.price.toLocaleString('vi-VN')}</span>
+                            <span>{formatPrice.toLocaleString('vi-VN')}</span>
                             <span className={cx('vnd')}>₫</span>
                         </div>
                         <button className={cx('order-btn')}>Thêm vào giỏ hàng</button>

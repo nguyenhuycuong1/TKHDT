@@ -1,56 +1,30 @@
 import styles from './HomePage.module.scss';
 import classNames from 'classnames/bind';
+import { useEffect, useState } from 'react';
 
 import ProductItem from '~/components/ProductItem';
+import { getAllProducts } from '~/services/userService';
 
 const cx = classNames.bind(styles);
-const PRODUCT_ITEM = {
-    p_name: 'Apple MacBook Air M1 256GB 2020 I Chính hãng Apple Việt Nam ',
-    price: 18450000,
-    discount: 20,
-    link_img: 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/a/i/air_m2.png',
-};
 
 function HomgPage() {
+    const [products, setProducts] = useState([]);
+    useEffect(() => {
+        const getProductList = async () => {
+            await getAllProducts().then((res) => setProducts(res));
+        };
+        getProductList();
+    }, []);
     return (
         <div className={cx('wrapper', 'grid wide')}>
             <div className={cx('product-list', 'row')}>
-                <div className="col l-3">
-                    <ProductItem data={PRODUCT_ITEM} />
-                </div>
-                <div className="col l-3">
-                    <ProductItem data={PRODUCT_ITEM} />
-                </div>
-                <div className="col l-3">
-                    <ProductItem data={PRODUCT_ITEM} />
-                </div>
-                <div className="col l-3">
-                    <ProductItem data={PRODUCT_ITEM} />
-                </div>
-                <div className="col l-3">
-                    <ProductItem data={PRODUCT_ITEM} />
-                </div>
-                <div className="col l-3">
-                    <ProductItem data={PRODUCT_ITEM} />
-                </div>
-                <div className="col l-3">
-                    <ProductItem data={PRODUCT_ITEM} />
-                </div>
-                <div className="col l-3">
-                    <ProductItem data={PRODUCT_ITEM} />
-                </div>
-                <div className="col l-3">
-                    <ProductItem data={PRODUCT_ITEM} />
-                </div>
-                <div className="col l-3">
-                    <ProductItem data={PRODUCT_ITEM} />
-                </div>
-                <div className="col l-3">
-                    <ProductItem data={PRODUCT_ITEM} />
-                </div>
-                <div className="col l-3">
-                    <ProductItem data={PRODUCT_ITEM} />
-                </div>
+                {products.map((p) => {
+                    return (
+                        <div key={p.products_id} className="col l-3">
+                            <ProductItem data={p} />
+                        </div>
+                    );
+                })}
             </div>
         </div>
     );

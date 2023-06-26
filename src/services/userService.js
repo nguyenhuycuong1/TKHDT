@@ -19,4 +19,14 @@ const getUserbyUsername = async (username) => {
     return user.data;
 };
 
-export { createAnAccount, loginMethod, forgotPassword, getUserbyUsername };
+const getAllProducts = async () => {
+    const products = await axios.get(API_URL + 'product');
+    return products.data;
+};
+
+const getProductsById = async (id) => {
+    const products = await axios.get(API_URL + `product/${id}`);
+    return products;
+};
+
+export { createAnAccount, loginMethod, forgotPassword, getUserbyUsername, getAllProducts, getProductsById };
