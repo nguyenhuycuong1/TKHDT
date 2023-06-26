@@ -13,6 +13,7 @@ function Header({ childPage }) {
     const navigate = useNavigate();
     const [toggle, setToggle] = useState(false);
     const { user, dispatch } = useContext(AuthContext);
+    const [searchValue, setSearchValue] = useState('');
 
     const handleToggle = () => {
         if (user) {
@@ -35,6 +36,13 @@ function Header({ childPage }) {
         setToggle(false);
     };
 
+    const handleSearchChange = (e) => {
+        const inputValue = e.target.value;
+        if (!inputValue.startsWith(' ')) {
+            setSearchValue(inputValue);
+        }
+    };
+
     return (
         <div className={cx('wrapper')}>
             <div className="grid wide">
@@ -44,7 +52,12 @@ function Header({ childPage }) {
                     </Link>
                     {!childPage && (childPage !== 'cart' || childPage !== 'order') && (
                         <div className={cx('search-group')}>
-                            <input className={cx('search-input')} placeholder="Tìm kiếm"></input>
+                            <input
+                                className={cx('search-input')}
+                                value={searchValue}
+                                onChange={(e) => handleSearchChange(e)}
+                                placeholder="Tìm kiếm"
+                            ></input>
                             <GlassIcon className={cx('search-icon')} width="2.4rem" height="2.4rem" />
                         </div>
                     )}

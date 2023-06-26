@@ -20,13 +20,38 @@ const getUserbyUsername = async (username) => {
 };
 
 const getAllProducts = async () => {
-    const products = await axios.get(API_URL + 'product');
+    const products = await axios.get(API_URL + 'products');
     return products.data;
 };
 
 const getProductsById = async (id) => {
-    const products = await axios.get(API_URL + `product/${id}`);
+    const product = await axios.get(API_URL + `product/${id}`);
+    return product;
+};
+
+const getAllBrands = async () => {
+    const brands = await axios.get(API_URL + 'brands');
+    return brands;
+};
+
+const getProductsOderBy = async (type) => {
+    const products = await axios.get(API_URL + `products/orderby/${type}`);
     return products;
 };
 
-export { createAnAccount, loginMethod, forgotPassword, getUserbyUsername, getAllProducts, getProductsById };
+const getProductsByBrand = async (type) => {
+    const products = await axios.get(API_URL + `products/${type}`);
+    return products;
+};
+
+export {
+    createAnAccount,
+    loginMethod,
+    forgotPassword,
+    getUserbyUsername,
+    getAllProducts,
+    getProductsById,
+    getAllBrands,
+    getProductsOderBy,
+    getProductsByBrand,
+};

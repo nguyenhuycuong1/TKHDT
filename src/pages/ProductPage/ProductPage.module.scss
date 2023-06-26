@@ -23,7 +23,7 @@
 }
 
 .pd-description {
-    flex: 1;
+    flex: 4;
     padding: 6px;
     max-width: 400px;
 }
@@ -38,7 +38,7 @@
 }
 
 .pd-price {
-    flex: 3;
+    flex: 1;
     display: flex;
     padding: 6px;
     font-size: 2.6rem;
@@ -48,6 +48,37 @@
 .vnd {
     align-self: flex-start;
     font-size: 1.8rem;
+}
+
+.amount-ctrl {
+    display: flex;
+    align-items: center;
+    user-select: none;
+    margin: 6px;
+}
+
+.amount-title {
+    font-size: 1.8rem;
+    margin-right: 28px;
+}
+
+.amount {
+    display: inline-block;
+    text-align: center;
+    line-height: 32px;
+    width: 42px;
+    height: 32px;
+    border-top: 1px solid #dedede;
+    border-bottom: 1px solid #dedede;
+}
+
+.amount-btn {
+    width: 32px;
+    height: 32px;
+    font-size: 1.6rem;
+    border: 1px solid #dedede;
+    background-color: transparent;
+    cursor: pointer;
 }
 
 .order-btn {

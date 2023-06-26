@@ -21,13 +21,22 @@ function App() {
             <div className="App">
                 <Routes>
                     <Route
-                        path="/"
+                        path={'/'}
                         element={
                             <DefaultLayout>
                                 <HomgPage />
                             </DefaultLayout>
                         }
-                    />
+                    >
+                        <Route
+                            path="/:type"
+                            element={
+                                <DefaultLayout>
+                                    <HomgPage />
+                                </DefaultLayout>
+                            }
+                        />
+                    </Route>
                     <Route
                         path="/user/profile/:username"
                         element={

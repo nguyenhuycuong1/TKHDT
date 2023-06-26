@@ -10,6 +10,7 @@ function ProductPage() {
     const params = useParams();
     const [formatPrice, setFormatPrice] = useState('');
     const product_id = params.id;
+    const [amount, setAmount] = useState(1);
     const [product, setProduct] = useState({});
     useEffect(() => {
         const getProductItem = async () => {
@@ -20,6 +21,14 @@ function ProductPage() {
     useEffect(() => {
         setFormatPrice(Math.floor(product.price));
     }, [product.price]);
+    useEffect(() => {
+        const formatAmount = () => {
+            if (amount < 1) {
+                setAmount(1);
+            }
+        };
+        formatAmount();
+    }, [amount]);
     return (
         <div className={cx('wrapper', 'grid wide')}>
             <div className={cx('product-info-box')}>
@@ -37,6 +46,16 @@ function ProductPage() {
                         <div className={cx('pd-price')}>
                             <span>{formatPrice.toLocaleString('vi-VN')}</span>
                             <span className={cx('vnd')}>₫</span>
+                        </div>
+                        <div className={cx('amount-ctrl')}>
+                            <div className={cx('amount-title')}>Số lượng: </div>
+                            <button className={cx('amount-btn')} onClick={() => setAmount(amount - 1)}>
+                                -
+                            </button>
+                            <span className={cx('amount')}>{amount}</span>
+                            <button className={cx('amount-btn')} onClick={() => setAmount(amount + 1)}>
+                                +
+                            </button>
                         </div>
                         <button className={cx('order-btn')}>Thêm vào giỏ hàng</button>
                     </div>
