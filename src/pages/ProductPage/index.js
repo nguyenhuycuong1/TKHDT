@@ -1,17 +1,21 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import styles from './ProductPage.module.scss';
 import classNames from 'classnames/bind';
-import { getProductsById } from '~/services/userService';
+import { addToCart, getProductsById, getUserbyUsername } from '~/services/userService';
 import { useParams } from 'react-router-dom';
+import { AuthContext } from '~/contexts/AuthContext';
 
 const cx = classNames.bind(styles);
 
 function ProductPage() {
+    const { user } = useContext(AuthContext);
+
     const params = useParams();
     const [formatPrice, setFormatPrice] = useState('');
     const product_id = params.id;
     const [amount, setAmount] = useState(1);
     const [product, setProduct] = useState({});
+    const [_user, set_User] = useState({});
     useEffect(() => {
         const getProductItem = async () => {
             await getProductsById(product_id).then((res) => setProduct(res.data));
@@ -29,6 +33,24 @@ function ProductPage() {
         };
         formatAmount();
     }, [amount]);
+    useEffect(() => {
+        const getUser = async () => {
+            await getUserbyUsername(user.username)
+                .then((res) => {
+                    set_User(res.result);
+                })
+                .catch((err) => console.log(err));
+        };
+        getUser();
+    }, [user]);
+    const handleAddToCard = async () => {
+        await addToCart({ cart_id: _user.id, product_id: product_id, quantity: amount })
+            .then((res) => {
+                alert('Đã thêm vào giở hàng');
+            })
+            .catch((err) => console.log(err));
+    };
+
     return (
         <div className={cx('wrapper', 'grid wide')}>
             <div className={cx('product-info-box')}>
@@ -57,7 +79,9 @@ function ProductPage() {
                                 +
                             </button>
                         </div>
-                        <button className={cx('order-btn')}>Thêm vào giỏ hàng</button>
+                        <button className={cx('order-btn')} onClick={() => handleAddToCard()}>
+                            Thêm vào giỏ hàng
+                        </button>
                     </div>
                 </div>
             </div>

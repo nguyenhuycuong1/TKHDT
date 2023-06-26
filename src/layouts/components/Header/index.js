@@ -1,7 +1,8 @@
 import { CartIcon, GlassIcon, UserCircleIcon } from '~/components/Icons';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '~/contexts/AuthContext';
 import { LogOut } from '~/contexts/AuthActions';
+import { useDebound } from '~/components/hooks';
 
 import styles from './Header.module.scss';
 import classNames from 'classnames/bind';
@@ -14,6 +15,17 @@ function Header({ childPage }) {
     const [toggle, setToggle] = useState(false);
     const { user, dispatch } = useContext(AuthContext);
     const [searchValue, setSearchValue] = useState('');
+    const debounced = useDebound(searchValue, 500);
+
+    useEffect(() => {
+        if (!debounced.trim()) {
+            return;
+        }
+        const test = () => {
+            console.log(debounced);
+        };
+        test();
+    }, [debounced]);
 
     const handleToggle = () => {
         if (user) {

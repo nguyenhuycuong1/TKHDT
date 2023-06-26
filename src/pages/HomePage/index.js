@@ -23,6 +23,7 @@ function HomgPage() {
         };
         getBrands();
     }, []);
+
     useEffect(() => {
         const getProductList = async () => {
             await getAllProducts()
@@ -33,11 +34,8 @@ function HomgPage() {
                     console.log(err);
                 });
         };
-        getProductList();
-    }, []);
-    useEffect(() => {
         const getPDbyBrand = async () => {
-            const brandId = brands.find((b) => b.brand_name === type).brand_id;
+            const brandId = await brands.find((b) => b.brand_name === type).brand_id;
             await getProductsByBrand(brandId)
                 .then((res) => setProducts(res.data))
                 .catch((err) => console.log(err));
@@ -49,6 +47,8 @@ function HomgPage() {
         };
         if (type === 'desc' || type === 'asc') {
             getPDOrderBy();
+        } else if (!type) {
+            getProductList();
         } else {
             getPDbyBrand();
         }
