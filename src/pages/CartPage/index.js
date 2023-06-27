@@ -1,84 +1,99 @@
 import styles from './CartPage.module.scss';
 import classNames from 'classnames/bind';
-import { useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 
 import PDInCart from '~/components/PDInCart';
+import { getCartProduct } from '~/services/userService';
 const cx = classNames.bind(styles);
 
-// const PRODUCT_ITEM = {
-//     p_name: 'Apple MacBook Air M1 256GB 2020 I Chính hãng Apple Việt Nam ',
-//     price: '18.450.000',
-//     discount: 20,
-//     link_img: 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/a/i/air_m2.png',
-// };
-
-const PRODUCT_LIST = [
-    {
-        id: 1,
-        p_name: 'Apple MacBook Air M1 256GB 2020 I Chính hãng Apple Việt Nam ',
-        price: 18450000,
-        discount: 20,
-        link_img: 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/a/i/air_m2.png',
-    },
-    {
-        id: 2,
-
-        p_name: 'Apple MacBook Air M1 256GB 2020 I Chính hãng Apple Việt Nam ',
-        price: 18450000,
-        discount: 20,
-        link_img: 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/a/i/air_m2.png',
-    },
-    {
-        id: 3,
-
-        p_name: 'Apple MacBook Air M1 256GB 2020 I Chính hãng Apple Việt Nam ',
-        price: 18450000,
-        discount: 20,
-        link_img: 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/a/i/air_m2.png',
-    },
-    {
-        id: 4,
-
-        p_name: 'Apple MacBook Air M1 256GB 2020 I Chính hãng Apple Việt Nam ',
-        price: 18450000,
-        discount: 20,
-        link_img: 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/a/i/air_m2.png',
-    },
-    {
-        id: 5,
-
-        p_name: 'Apple MacBook Air M1 256GB 2020 I Chính hãng Apple Việt Nam ',
-        price: 18450000,
-        discount: 20,
-        link_img: 'https://cdn2.cellphones.com.vn/358x358,webp,q100/media/catalog/product/a/i/air_m2.png',
-    },
-];
-
 function CartPage() {
+    const checkallRef = useRef();
+    const [cartproduct, setCartproduct] = useState([]);
     const [checked, setChecked] = useState([]);
+    const [productCheck, setProductCheck] = useState([]);
+    const [_price, setPrice] = useState([]);
+    const [totalPrice, setTotalPrice] = useState(0);
+    const [products, setProducts] = useState([]);
+
+    useEffect(() => {
+        const getCDitem = async () => {
+            await getCartProduct()
+                .then((res) => setCartproduct(res.data))
+                .catch((err) => {
+                    console.log(err);
+                });
+        };
+        getCDitem();
+    }, []);
+
     const handleCheckAllChange = (e) => {
         if (e.target.checked) {
-            const allProducts = PRODUCT_LIST.map((p) => p.id);
-            setChecked(allProducts);
+            const allProductsID = cartproduct.map((p) => {
+                return p.product_id;
+            });
+            checkallRef.current.checked = true;
+            if (checkallRef.current.checked === true) {
+                console.log(products);
+            }
+            setChecked(allProductsID);
         } else {
             setChecked([]);
+            setProducts([]);
         }
     };
 
-    const handleCountryChange = (e, p) => {
+    const handleProductChange = (e, p, price) => {
         if (e.target.checked) {
-            setChecked([...checked, p.id]);
+            setChecked([...checked, p.product_id]);
+            setPrice([..._price, price]);
+            setProducts([...products, p]);
         } else {
-            setChecked(checked.filter((item) => item !== p.id));
+            setChecked(checked.filter((item) => item !== p.product_id));
+            const cpQuantity = cartproduct.find((cp) => cp.product_id === p.product_id).quantity;
+            setPrice(_price.filter((item) => item !== Math.floor(p.price) * cpQuantity));
+            setProducts(products.filter((item) => item.product_id !== p.product_id));
         }
     };
+
+    useEffect(() => {
+        const totalPrice = _price.reduce((prev, next) => {
+            return prev + next;
+        }, 0);
+        setTotalPrice(totalPrice);
+    }, [_price, checked]);
 
     const handleClickBuyBtn = () => {
         if (checked.length === 0) {
             alert('chua co san pham');
         }
-        console.log(checked);
+    };
+
+    useEffect(() => {
+        const getTotal = () => {
+            if (checked) {
+                return checked.map((id) => {
+                    return cartproduct.find((p) => {
+                        if (p.product_id === id) {
+                            return p.quantity;
+                        }
+                        return 0;
+                    });
+                });
+            }
+        };
+
+        setProductCheck(getTotal());
+    }, [checked, cartproduct]);
+
+    const handleQuantity = () => {
+        if (productCheck) {
+            return productCheck.reduce((prev, next) => {
+                return prev + next.quantity;
+            }, 0);
+        } else {
+            return 0;
+        }
     };
 
     return (
@@ -86,9 +101,10 @@ function CartPage() {
             <div className={cx('header', 'row')}>
                 <div className="col l-6">
                     <input
+                        ref={checkallRef}
                         type="checkbox"
                         id="selectAll"
-                        checked={checked.length === PRODUCT_LIST.length}
+                        checked={checked.length === cartproduct.length}
                         onChange={handleCheckAllChange}
                         className={cx('checkbox')}
                     ></input>
@@ -104,9 +120,14 @@ function CartPage() {
                 </div>
             </div>
             <div className={cx('list-cart-product')}>
-                {PRODUCT_LIST.map((p) => {
+                {cartproduct.map((cp) => {
                     return (
-                        <PDInCart key={p.id} data={p} checked={checked.includes(p.id)} change={handleCountryChange} />
+                        <PDInCart
+                            key={cp.product_id}
+                            data={cp}
+                            checked={checked.includes(cp.product_id)}
+                            change={handleProductChange}
+                        />
                     );
                 })}
             </div>
@@ -115,7 +136,7 @@ function CartPage() {
                     <input
                         type="checkbox"
                         id="selectAll"
-                        checked={checked.length === PRODUCT_LIST.length}
+                        checked={checked.length === cartproduct.length}
                         onChange={handleCheckAllChange}
                         className={cx('checkbox')}
                     ></input>
@@ -123,7 +144,7 @@ function CartPage() {
                 </div>
                 <div>
                     <div className={cx('total-price')}>
-                        Tổng sản phẩm {`( ${checked.length} sản phẩm ): 0`}
+                        Tổng sản phẩm {`( ${handleQuantity()} sản phẩm ): ${totalPrice}`}
                         <span className={cx('vnd')}>₫</span>
                     </div>
                 </div>

@@ -45,7 +45,12 @@ const getProductsByBrand = async (type) => {
 };
 
 const addToCart = async (data) => {
-    return await axios.post(API_URL + 'addtocard', data);
+    return await axios.post(API_URL + 'addtocart', data);
+};
+
+const getCartProduct = async () => {
+    const res = axios.get(API_URL + 'carts');
+    return res;
 };
 
 export {
@@ -59,4 +64,5 @@ export {
     getProductsOderBy,
     getProductsByBrand,
     addToCart,
+    getCartProduct,
 };
