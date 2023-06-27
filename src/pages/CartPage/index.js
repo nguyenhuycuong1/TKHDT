@@ -1,6 +1,6 @@
 import styles from './CartPage.module.scss';
 import classNames from 'classnames/bind';
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import PDInCart from '~/components/PDInCart';
@@ -8,13 +8,11 @@ import { getCartProduct } from '~/services/userService';
 const cx = classNames.bind(styles);
 
 function CartPage() {
-    const checkallRef = useRef();
     const [cartproduct, setCartproduct] = useState([]);
     const [checked, setChecked] = useState([]);
     const [productCheck, setProductCheck] = useState([]);
     const [_price, setPrice] = useState([]);
     const [totalPrice, setTotalPrice] = useState(0);
-    const [products, setProducts] = useState([]);
 
     useEffect(() => {
         const getCDitem = async () => {
@@ -32,14 +30,10 @@ function CartPage() {
             const allProductsID = cartproduct.map((p) => {
                 return p.product_id;
             });
-            checkallRef.current.checked = true;
-            if (checkallRef.current.checked === true) {
-                console.log(products);
-            }
+
             setChecked(allProductsID);
         } else {
             setChecked([]);
-            setProducts([]);
         }
     };
 
@@ -47,12 +41,10 @@ function CartPage() {
         if (e.target.checked) {
             setChecked([...checked, p.product_id]);
             setPrice([..._price, price]);
-            setProducts([...products, p]);
         } else {
             setChecked(checked.filter((item) => item !== p.product_id));
             const cpQuantity = cartproduct.find((cp) => cp.product_id === p.product_id).quantity;
             setPrice(_price.filter((item) => item !== Math.floor(p.price) * cpQuantity));
-            setProducts(products.filter((item) => item.product_id !== p.product_id));
         }
     };
 
@@ -101,7 +93,6 @@ function CartPage() {
             <div className={cx('header', 'row')}>
                 <div className="col l-6">
                     <input
-                        ref={checkallRef}
                         type="checkbox"
                         id="selectAll"
                         checked={checked.length === cartproduct.length}

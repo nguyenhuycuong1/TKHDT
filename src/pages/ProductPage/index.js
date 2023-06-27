@@ -44,6 +44,7 @@ function ProductPage() {
         getUser();
     }, [user]);
     const handleAddToCard = async () => {
+        console.log(_user);
         await addToCart({ cart_id: _user.id, product_id: product_id, quantity: amount })
             .then((res) => {
                 alert('Đã thêm vào giở hàng');
