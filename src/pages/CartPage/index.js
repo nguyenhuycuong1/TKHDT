@@ -1,6 +1,6 @@
 import styles from './CartPage.module.scss';
 import classNames from 'classnames/bind';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 
 import PDInCart from '~/components/PDInCart';
@@ -13,7 +13,8 @@ function CartPage() {
     const [productCheck, setProductCheck] = useState([]);
     const [_price, setPrice] = useState([]);
     const [totalPrice, setTotalPrice] = useState(0);
-
+    const [u, updateState] = useState();
+    const handleForceupdateMethod = useCallback(() => updateState({}), []);
     useEffect(() => {
         const getCDitem = async () => {
             await getCartProduct()
@@ -23,7 +24,7 @@ function CartPage() {
                 });
         };
         getCDitem();
-    }, []);
+    }, [u]);
 
     const handleCheckAllChange = (e) => {
         if (e.target.checked) {
@@ -118,6 +119,7 @@ function CartPage() {
                             data={cp}
                             checked={checked.includes(cp.product_id)}
                             change={handleProductChange}
+                            _click={handleForceupdateMethod}
                         />
                     );
                 })}

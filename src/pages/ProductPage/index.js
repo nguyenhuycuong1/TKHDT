@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from 'react';
 import styles from './ProductPage.module.scss';
 import classNames from 'classnames/bind';
-import { addToCart, getProductsById, getUserbyUsername } from '~/services/userService';
+import { addToCart, getCartByUserId, getProductsById, getUserbyUsername } from '~/services/userService';
 import { useParams } from 'react-router-dom';
 import { AuthContext } from '~/contexts/AuthContext';
 
@@ -15,7 +15,7 @@ function ProductPage() {
     const product_id = params.id;
     const [amount, setAmount] = useState(1);
     const [product, setProduct] = useState({});
-    const [_user, set_User] = useState({});
+    const [cart, setCart] = useState({});
     useEffect(() => {
         const getProductItem = async () => {
             await getProductsById(product_id).then((res) => setProduct(res.data));
@@ -34,18 +34,19 @@ function ProductPage() {
         formatAmount();
     }, [amount]);
     useEffect(() => {
-        const getUser = async () => {
+        const getCart = async () => {
+            // console.log(_userId);
             await getUserbyUsername(user.username)
-                .then((res) => {
-                    set_User(res.result);
+                .then(async (res) => {
+                    await getCartByUserId(res.result[0].id).then((res) => setCart(res));
                 })
                 .catch((err) => console.log(err));
         };
-        getUser();
+        getCart();
     }, [user]);
+
     const handleAddToCard = async () => {
-        console.log(_user);
-        await addToCart({ cart_id: _user.id, product_id: product_id, quantity: amount })
+        await addToCart({ cart_id: cart.cart_id, product_id: product_id, quantity: amount })
             .then((res) => {
                 alert('Đã thêm vào giở hàng');
             })
