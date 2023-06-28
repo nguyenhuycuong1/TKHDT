@@ -1,0 +1,25 @@
+.tablemodule {
+    width: 1200px;
+}
+
+.field {
+    font-size: 2.2rem;
+    color: var(--primary-color);
+}
+
+.rowmodule {
+    font-size: 1.8rem;
+    color: var(--primary-color);
+}
+
+.delete-btn {
+    width: 70%;
+    align-items: center;
+    border: none;
+    transition: all linear 0.05s;
+}
+.delete-btn:hover {
+    cursor: pointer;
+    background-color: rgb(253, 96, 96);
+    color: white;
+}

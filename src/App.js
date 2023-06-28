@@ -6,6 +6,7 @@ import { AuthContext } from './contexts/AuthContext';
 
 import DefaultLayout from './layouts/DefaultLayout';
 import HeaderOnly from './layouts/HeaderOnly';
+import LayoutAdmin from './layouts/LayoutAdmin';
 import HomgPage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import CartPage from './pages/CartPage';
@@ -13,6 +14,7 @@ import ForgotPasswordPage from './pages/ForgotPasswordPage';
 import ProductPage from './pages/ProductPage';
 import OrderPage from './pages/OrderPage';
 import ProfilePage from './pages/ProfilePage';
+import AdminHomePage from './pages/AdminHomePage';
 
 function App() {
     const { user } = useContext(AuthContext);
@@ -20,6 +22,23 @@ function App() {
         <Router>
             <div className="App">
                 <Routes>
+                    <Route
+                        path="/admin"
+                        element={
+                            <LayoutAdmin>
+                                <AdminHomePage />
+                            </LayoutAdmin>
+                        }
+                    >
+                        <Route
+                            path="/admin/:option"
+                            element={
+                                <LayoutAdmin>
+                                    <AdminHomePage />
+                                </LayoutAdmin>
+                            }
+                        />
+                    </Route>
                     <Route
                         path={'/'}
                         element={

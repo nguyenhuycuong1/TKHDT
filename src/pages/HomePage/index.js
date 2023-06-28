@@ -11,6 +11,7 @@ const cx = classNames.bind(styles);
 function HomgPage() {
     const params = useParams();
     const type = params.type;
+
     const [products, setProducts] = useState([]);
     const [brands, setBrands] = useState([]);
     useEffect(() => {
