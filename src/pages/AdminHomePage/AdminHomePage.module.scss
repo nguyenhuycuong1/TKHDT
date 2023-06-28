@@ -1,8 +1,14 @@
+.wrapper {
+    margin-left: 26px;
+    margin-top: -16px;
+}
+
 .tablemodule {
     width: 1200px;
 }
 
 .field {
+    min-width: 180px;
     font-size: 2.2rem;
     color: var(--primary-color);
 }
@@ -13,7 +19,7 @@
 }
 
 .delete-btn {
-    width: 70%;
+    width: 80px;
     align-items: center;
     border: none;
     transition: all linear 0.05s;
@@ -22,4 +28,23 @@
     cursor: pointer;
     background-color: rgb(253, 96, 96);
     color: white;
+}
+
+.update-btn {
+    width: 80px;
+    align-items: center;
+    border: none;
+    transition: all linear 0.05s;
+    margin-right: 4px;
+}
+.update-btn:hover {
+    cursor: pointer;
+    background-color: rgb(56, 59, 233);
+    color: white;
+}
+
+.product-img {
+    display: block;
+    width: 100px;
+    height: 100px;
 }
