@@ -9,7 +9,7 @@ const cx = classNames.bind(styles);
 function PDInCart({ data, checked, change, _click }) {
     const [product, setProduct] = useState({});
     const [formatPrice, setFormatPrice] = useState('');
-
+    const [amount, setAmount] = useState(data.quantity);
     useEffect(() => {
         const getPoduct = async () => {
             await getProductsById(data.product_id)
@@ -24,24 +24,11 @@ function PDInCart({ data, checked, change, _click }) {
         setFormatPrice(Math.floor(product.price));
     }, [product.price]);
 
-    const handleIncreaseAmount = async () => {
-        // await setAmount(amount + 1);
-
-        await updateQuantityCartProduct(
-            { cart_id: data.cart_id, product_id: data.product_id },
-            data.quantity + 1,
-        ).catch((err) => console.log(err));
-    };
-    const handleReduceAmount = async () => {
-        // await setAmount(amount - 1);
-        if (data.quantity <= 1) {
+    useEffect(() => {
+        if (amount < 1) {
             handleDeleteCartProduct();
         }
-        await updateQuantityCartProduct(
-            { cart_id: data.cart_id, product_id: data.product_id },
-            data.quantity - 1,
-        ).catch((err) => console.log(err));
-    };
+    }, [amount]);
 
     const handleDeleteCartProduct = async () => {
         await deleteCartProduct(data.cart_id, data.product_id).catch((err) => console.log(err));
@@ -73,36 +60,24 @@ function PDInCart({ data, checked, change, _click }) {
                     </div>
                     <div className="col l-3">
                         <div className={cx('amount-ctrl')}>
-                            <button
-                                className={cx('amount-btn')}
-                                onClick={() => {
-                                    handleReduceAmount();
-                                    _click();
-                                }}
-                            >
+                            <button className={cx('amount-btn')} onClick={() => setAmount(amount - 1)}>
                                 -
                             </button>
-                            <span className={cx('amount')}>{data.quantity}</span>
-                            <button
-                                className={cx('amount-btn')}
-                                onClick={() => {
-                                    handleIncreaseAmount();
-                                    _click();
-                                }}
-                                cl
-                            >
+                            <span className={cx('amount')}>{amount}</span>
+                            <button className={cx('amount-btn')} onClick={() => setAmount(amount + 1)} cl>
                                 +
                             </button>
                         </div>
                     </div>
                     <div className="col l-3">
-                        <span className={cx('pd-price')}>{(formatPrice * data.quantity).toLocaleString('vi-VN')}</span>
+                        <span className={cx('pd-price')}>{(formatPrice * amount).toLocaleString('vi-VN')}</span>
                     </div>
                     <div className="col l-3">
                         <button
                             className={cx('delete-pd-btn')}
                             onClick={() => {
                                 handleDeleteCartProduct();
+                                _click();
                             }}
                         >
                             Xóa
