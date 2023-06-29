@@ -9,14 +9,19 @@ const OPTIONSBTN = ['User', 'Product', 'Order'];
 
 function LayoutAdmin({ children }) {
     const navigate = useNavigate();
-    const [options, setOptions] = useState('');
+    const [, setOptions] = useState('');
     const handleSetOptions = (o) => {
         setOptions(o);
         navigate(`/admin/${o}`);
     };
+    const handleLogo = () => {
+        navigate('/admin');
+    };
     return (
         <div className={cx('wrapper')}>
-            <h1 className={cx('logo')}>ADMIN</h1>
+            <h1 className={cx('logo')} onClick={() => handleLogo()}>
+                ADMIN
+            </h1>
             <div className={cx('layout-wrapper')}>
                 <div className={cx('controller-box')}>
                     {OPTIONSBTN.map((o, index) => {

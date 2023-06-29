@@ -2,7 +2,7 @@ import styles from './AdminHomePage.module.scss';
 import classNames from 'classnames/bind';
 import { useEffect, useState } from 'react';
 
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { getAllProducts, getAllUser } from '~/services/userService';
 
 const cx = classNames.bind(styles);
@@ -16,11 +16,15 @@ function AdminHomePage() {
 
     const params = useParams();
     const option = params.option;
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (option === USERMENAGEMENT) {
             const getListUser = async () => {
-                await getAllUser().then((res) => setUser(res.result));
+                await getAllUser().then((res) => {
+                    const listUser = res.result.filter((u) => u.username !== 'ADMIN001');
+                    setUser(listUser);
+                });
             };
             getListUser();
         } else if (option === PRODUCTMENAGEMENT) {
@@ -28,13 +32,13 @@ function AdminHomePage() {
                 await getAllProducts().then((res) => setProducts(res));
             };
             getListProduct();
+        } else {
+            return;
         }
     }, [option]);
-
-    useEffect(() => {
-        console.log(user);
-        console.log(products);
-    }, [user, products]);
+    const handleAddProduct = () => {
+        navigate('/admin/Product/add');
+    };
     return (
         <div className={cx('wrapper')}>
             {option === USERMENAGEMENT && (
@@ -83,6 +87,9 @@ function AdminHomePage() {
             )}
             {option === PRODUCTMENAGEMENT && (
                 <div className={cx('products-wrapper')}>
+                    <div className={cx('add-product')} onClick={() => handleAddProduct()}>
+                        Thêm sản phẩm
+                    </div>
                     <table className={cx('tablemodule', 'table')}>
                         <thead class="thead-dark">
                             <tr>
@@ -112,11 +119,11 @@ function AdminHomePage() {
                         <tbody>
                             {products.map((p) => {
                                 return (
-                                    <tr>
+                                    <tr key={p.product_id}>
                                         <td
                                             className={cx('product-img')}
                                             style={{
-                                                background: `url(${p.image}) no-repeat center`,
+                                                background: `url(${p.image}) no-repeat`,
                                             }}
                                         ></td>
                                         <td>

@@ -49,6 +49,10 @@ const getProductsByBrand = async (type) => {
     return products;
 };
 
+const createNewProduct = async (data) => {
+    return await axios.post(API_URL + 'product', data);
+};
+
 const addToCart = async (data) => {
     return await axios.post(API_URL + 'addtocart', data);
 };
@@ -109,6 +113,7 @@ export {
     getAllBrands,
     getProductsOderBy,
     getProductsByBrand,
+    createNewProduct,
     addToCart,
     getCartProduct,
     getCartByUserId,

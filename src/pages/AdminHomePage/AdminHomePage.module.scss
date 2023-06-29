@@ -46,3 +46,19 @@
 .product-img {
     background-size: 100px 100px !important;
 }
+
+.add-product {
+    width: 140px;
+    height: 40px;
+    background-color: #dedede;
+    text-align: center;
+    line-height: 40px;
+    margin: 8px 0;
+    padding: 0 8px;
+}
+
+.add-product:hover {
+    background-color: rgb(187, 187, 73);
+    color: white;
+    cursor: pointer;
+}

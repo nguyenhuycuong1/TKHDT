@@ -15,6 +15,7 @@ import ProductPage from './pages/ProductPage';
 import OrderPage from './pages/OrderPage';
 import ProfilePage from './pages/ProfilePage';
 import AdminHomePage from './pages/AdminHomePage';
+import AddProduct from './pages/AddProduct';
 
 function App() {
     const { user } = useContext(AuthContext);
@@ -31,16 +32,10 @@ function App() {
                                 </LayoutAdmin>
                             }
                         >
-                            <Route
-                                path="/admin/:option"
-                                element={
-                                    <LayoutAdmin>
-                                        <AdminHomePage />
-                                    </LayoutAdmin>
-                                }
-                            />
+                            <Route path="/admin/:option" element={<AdminHomePage />} />
                         </Route>
                     )}
+                    {user && user.role === 'admin' && <Route path="/admin/Product/add" element={<AddProduct />} />}
                     <Route
                         path={'/'}
                         element={
