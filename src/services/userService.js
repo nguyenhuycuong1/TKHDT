@@ -15,8 +15,13 @@ const forgotPassword = async (data) => {
 };
 
 const getUserbyUsername = async (username) => {
-    const user = await axios.get(API_URL + `users/?username=${username}`);
+    const user = await axios.get(API_URL + `user/?username=${username}`);
     return user.data;
+};
+
+const getAllUser = async () => {
+    const users = await axios.get(API_URL + 'users');
+    return users.data;
 };
 
 const getAllProducts = async () => {
@@ -58,8 +63,8 @@ const getCartProduct = async () => {
     return res;
 };
 
-const getCartProductbypId = async (product_id) => {
-    const res = await axios.get(API_URL + `cartByProductId/${product_id}`);
+const getCartProductbyCartId = async (cart_id) => {
+    const res = await axios.get(API_URL + `cartByCartId/${cart_id}`);
     return res.data;
 };
 
@@ -108,7 +113,8 @@ export {
     getCartProduct,
     getCartByUserId,
     updateQuantityCartProduct,
-    getCartProductbypId,
+    getCartProductbyCartId,
     deleteCartProduct,
     getListProductSearch,
+    getAllUser,
 };

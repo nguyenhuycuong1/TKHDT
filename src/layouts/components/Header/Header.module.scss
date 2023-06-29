@@ -61,6 +61,13 @@
     overflow: auto;
 }
 
+.no-result {
+    display: block;
+    width: 280px;
+    text-align: center;
+    line-height: 40px;
+}
+
 .cart,
 .user {
     height: 64px;

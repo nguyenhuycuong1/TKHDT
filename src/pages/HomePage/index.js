@@ -1,7 +1,7 @@
 import styles from './HomePage.module.scss';
 import classNames from 'classnames/bind';
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
 import ProductItem from '~/components/ProductItem';
 import { getAllBrands, getAllProducts, getProductsByBrand, getProductsOderBy } from '~/services/userService';
@@ -11,7 +11,7 @@ const cx = classNames.bind(styles);
 function HomgPage() {
     const params = useParams();
     const type = params.type;
-
+    const navigate = useNavigate();
     const [products, setProducts] = useState([]);
     const [brands, setBrands] = useState([]);
     useEffect(() => {
@@ -24,6 +24,10 @@ function HomgPage() {
         };
         getBrands();
     }, []);
+
+    const findBrand = () => {
+        return brands.find((b) => b.brand_name === type);
+    };
 
     useEffect(() => {
         const getProductList = async () => {
@@ -50,10 +54,12 @@ function HomgPage() {
             getPDOrderBy();
         } else if (!type) {
             getProductList();
-        } else {
+        } else if (!!findBrand() && type === findBrand().brand_name) {
             getPDbyBrand();
+        } else {
+            navigate('/');
         }
-    }, [type, brands]);
+    }, [type, brands, navigate]);
 
     return (
         <div className={cx('wrapper', 'grid wide')}>

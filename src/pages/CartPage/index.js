@@ -1,13 +1,15 @@
 import styles from './CartPage.module.scss';
 import classNames from 'classnames/bind';
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useContext } from 'react';
 import { Link } from 'react-router-dom';
 
 import PDInCart from '~/components/PDInCart';
-import { getCartProduct } from '~/services/userService';
+import { AuthContext } from '~/contexts/AuthContext';
+import { getCartByUserId, getCartProductbyCartId } from '~/services/userService';
 const cx = classNames.bind(styles);
 
 function CartPage() {
+    const { user } = useContext(AuthContext);
     const [cartproduct, setCartproduct] = useState([]);
     const [checked, setChecked] = useState([]);
     const [productCheck, setProductCheck] = useState([]);
@@ -17,14 +19,18 @@ function CartPage() {
     const handleForceupdateMethod = useCallback(() => updateState({}), []);
     useEffect(() => {
         const getCDitem = async () => {
-            await getCartProduct()
-                .then((res) => setCartproduct(res.data))
+            await getCartByUserId(user.id)
+                .then(async (res) => {
+                    await getCartProductbyCartId(res.cart_id).then((res) => {
+                        setCartproduct(res);
+                    });
+                })
                 .catch((err) => {
                     console.log(err);
                 });
         };
         getCDitem();
-    }, [u]);
+    }, [u, user.id]);
 
     const handleCheckAllChange = (e) => {
         if (e.target.checked) {
@@ -75,7 +81,7 @@ function CartPage() {
                 });
             }
         };
-
+        console.log(checked, cartproduct);
         setProductCheck(getTotal());
     }, [checked, cartproduct]);
 

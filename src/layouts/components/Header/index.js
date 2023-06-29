@@ -17,16 +17,22 @@ function Header({ childPage }) {
     const [toggle, setToggle] = useState(false);
     const { user, dispatch } = useContext(AuthContext);
     const [searchValue, setSearchValue] = useState('');
-    const [searchResult, setSearchResult] = useState([]);
+    const [searchResult, setSearchResult] = useState();
     const debounced = useDebound(searchValue, 500);
 
     useEffect(() => {
         if (!debounced.trim()) {
-            setSearchResult([]);
+            setSearchResult();
             return;
         }
         const getsearchresult = async () => {
-            await getListProductSearch(debounced).then((res) => setSearchResult(res));
+            await getListProductSearch(debounced).then((res) => {
+                if (res.length === 0) {
+                    setSearchResult();
+                } else {
+                    setSearchResult(res);
+                }
+            });
         };
         getsearchresult();
     }, [debounced]);
@@ -77,11 +83,13 @@ function Header({ childPage }) {
                             <GlassIcon className={cx('search-icon')} width="2.4rem" height="2.4rem" />
                             {searchValue && (
                                 <div className={cx('search-vaule-pop')}>
-                                    {searchResult &&
+                                    {searchResult ? (
                                         searchResult.map((p) => {
                                             return <ProductSearch key={p.product_id} data={p} />;
-                                        })}
-                                    {searchResult === [] && <span>Không có sản phẩm</span>}
+                                        })
+                                    ) : (
+                                        <span className={cx('no-result')}>Không có sản phẩm</span>
+                                    )}
                                 </div>
                             )}
                         </div>

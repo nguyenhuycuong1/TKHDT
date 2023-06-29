@@ -35,10 +35,14 @@ function ProductPage() {
     }, [amount]);
     useEffect(() => {
         const getCart = async () => {
-            // console.log(_userId);
+            console.log(user);
             await getUserbyUsername(user.username)
                 .then(async (res) => {
-                    await getCartByUserId(res.result[0].id).then((res) => setCart(res));
+                    console.log(res);
+                    await getCartByUserId(res.result.id).then((res) => {
+                        console.log(res);
+                        setCart(res);
+                    });
                 })
                 .catch((err) => console.log(err));
         };
@@ -46,6 +50,7 @@ function ProductPage() {
     }, [user]);
 
     const handleAddToCard = async () => {
+        console.log(cart);
         await addToCart({ cart_id: cart.cart_id, product_id: product_id, quantity: amount })
             .then((res) => {
                 alert('Đã thêm vào giở hàng');

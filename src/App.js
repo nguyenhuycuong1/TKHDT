@@ -22,23 +22,25 @@ function App() {
         <Router>
             <div className="App">
                 <Routes>
-                    <Route
-                        path="/admin"
-                        element={
-                            <LayoutAdmin>
-                                <AdminHomePage />
-                            </LayoutAdmin>
-                        }
-                    >
+                    {user && user.role === 'admin' && (
                         <Route
-                            path="/admin/:option"
+                            path="/admin"
                             element={
                                 <LayoutAdmin>
                                     <AdminHomePage />
                                 </LayoutAdmin>
                             }
-                        />
-                    </Route>
+                        >
+                            <Route
+                                path="/admin/:option"
+                                element={
+                                    <LayoutAdmin>
+                                        <AdminHomePage />
+                                    </LayoutAdmin>
+                                }
+                            />
+                        </Route>
+                    )}
                     <Route
                         path={'/'}
                         element={
