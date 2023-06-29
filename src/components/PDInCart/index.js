@@ -1,19 +1,13 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState } from 'react';
 import styles from './PDInCart.module.scss';
 import classNames from 'classnames/bind';
 import { Link } from 'react-router-dom';
-import {
-    deleteCartProduct,
-    getCartProductbypId,
-    getProductsById,
-    updateQuantityCartProduct,
-} from '~/services/userService';
+import { deleteCartProduct, getProductsById, updateQuantityCartProduct } from '~/services/userService';
 
 const cx = classNames.bind(styles);
 
 function PDInCart({ data, checked, change, _click }) {
     const [product, setProduct] = useState({});
-    const [amount, setAmount] = useState(data.quantity);
     const [formatPrice, setFormatPrice] = useState('');
 
     useEffect(() => {
@@ -29,14 +23,7 @@ function PDInCart({ data, checked, change, _click }) {
     useEffect(() => {
         setFormatPrice(Math.floor(product.price));
     }, [product.price]);
-    useEffect(() => {
-        const formatAmount = () => {
-            if (amount < 1) {
-                setAmount(1);
-            }
-        };
-        formatAmount();
-    }, [amount]);
+
     const handleIncreaseAmount = async () => {
         // await setAmount(amount + 1);
 
@@ -47,17 +34,18 @@ function PDInCart({ data, checked, change, _click }) {
     };
     const handleReduceAmount = async () => {
         // await setAmount(amount - 1);
+        if (data.quantity <= 1) {
+            handleDeleteCartProduct();
+        }
         await updateQuantityCartProduct(
             { cart_id: data.cart_id, product_id: data.product_id },
             data.quantity - 1,
         ).catch((err) => console.log(err));
-        if (data.quantity < 1) {
-            handleDeleteCartProduct();
-        }
     };
 
     const handleDeleteCartProduct = async () => {
         await deleteCartProduct(data.cart_id, data.product_id).catch((err) => console.log(err));
+        window.location.reload();
     };
 
     return (
@@ -115,7 +103,6 @@ function PDInCart({ data, checked, change, _click }) {
                             className={cx('delete-pd-btn')}
                             onClick={() => {
                                 handleDeleteCartProduct();
-                                _click();
                             }}
                         >
                             Xóa

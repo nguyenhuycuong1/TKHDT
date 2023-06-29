@@ -7,6 +7,8 @@ import { useDebound } from '~/components/hooks';
 import styles from './Header.module.scss';
 import classNames from 'classnames/bind';
 import { Link, useNavigate } from 'react-router-dom';
+import { getListProductSearch } from '~/services/userService';
+import ProductSearch from '~/components/ProductSearch';
 
 const cx = classNames.bind(styles);
 
@@ -15,16 +17,18 @@ function Header({ childPage }) {
     const [toggle, setToggle] = useState(false);
     const { user, dispatch } = useContext(AuthContext);
     const [searchValue, setSearchValue] = useState('');
+    const [searchResult, setSearchResult] = useState([]);
     const debounced = useDebound(searchValue, 500);
 
     useEffect(() => {
         if (!debounced.trim()) {
+            setSearchResult([]);
             return;
         }
-        const test = () => {
-            console.log(debounced);
+        const getsearchresult = async () => {
+            await getListProductSearch(debounced).then((res) => setSearchResult(res));
         };
-        test();
+        getsearchresult();
     }, [debounced]);
 
     const handleToggle = () => {
@@ -71,6 +75,15 @@ function Header({ childPage }) {
                                 placeholder="Tìm kiếm"
                             ></input>
                             <GlassIcon className={cx('search-icon')} width="2.4rem" height="2.4rem" />
+                            {searchValue && (
+                                <div className={cx('search-vaule-pop')}>
+                                    {searchResult &&
+                                        searchResult.map((p) => {
+                                            return <ProductSearch key={p.product_id} data={p} />;
+                                        })}
+                                    {searchResult === [] && <span>Không có sản phẩm</span>}
+                                </div>
+                            )}
                         </div>
                     )}
 

@@ -88,7 +88,7 @@ function CartPage() {
             return 0;
         }
     };
-
+    console.log('rendering...');
     return (
         <div className={cx('wrapper', 'grid wide')}>
             <div className={cx('header', 'row')}>

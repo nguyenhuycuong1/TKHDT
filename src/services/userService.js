@@ -89,6 +89,11 @@ const deleteCartProduct = async (cart_id, product_id) => {
     }
 };
 
+const getListProductSearch = async (product_name) => {
+    const listProduct = await axios.get(API_URL + `products/search/${product_name}`);
+    return listProduct.data;
+};
+
 export {
     createAnAccount,
     loginMethod,
@@ -105,4 +110,5 @@ export {
     updateQuantityCartProduct,
     getCartProductbypId,
     deleteCartProduct,
+    getListProductSearch,
 };
