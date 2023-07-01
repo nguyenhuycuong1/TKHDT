@@ -2,14 +2,14 @@ import { useState, useEffect, useContext } from 'react';
 import styles from './ProductPage.module.scss';
 import classNames from 'classnames/bind';
 import { addToCart, getCartByUserId, getProductsById, getUserbyUsername } from '~/services/userService';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { AuthContext } from '~/contexts/AuthContext';
 
 const cx = classNames.bind(styles);
 
 function ProductPage() {
     const { user } = useContext(AuthContext);
-
+    const navigate = useNavigate();
     const params = useParams();
     const [formatPrice, setFormatPrice] = useState('');
     const product_id = params.id;
@@ -34,28 +34,31 @@ function ProductPage() {
         formatAmount();
     }, [amount]);
     useEffect(() => {
-        const getCart = async () => {
-            console.log(user);
-            await getUserbyUsername(user.username)
-                .then(async (res) => {
-                    console.log(res);
-                    await getCartByUserId(res.result.id).then((res) => {
+        if (user) {
+            const getCart = async () => {
+                await getUserbyUsername(user.username)
+                    .then(async (res) => {
                         console.log(res);
-                        setCart(res);
-                    });
-                })
-                .catch((err) => console.log(err));
-        };
-        getCart();
+                        await getCartByUserId(res.result.id).then((res) => {
+                            setCart(res);
+                        });
+                    })
+                    .catch((err) => console.log(err));
+            };
+            getCart();
+        }
     }, [user]);
 
     const handleAddToCard = async () => {
-        console.log(cart);
-        await addToCart({ cart_id: cart.cart_id, product_id: product_id, quantity: amount })
-            .then((res) => {
-                alert('Đã thêm vào giở hàng');
-            })
-            .catch((err) => console.log(err));
+        if (user) {
+            await addToCart({ cart_id: cart.cart_id, product_id: product_id, quantity: amount })
+                .then((res) => {
+                    alert('Đã thêm vào giở hàng');
+                })
+                .catch((err) => console.log(err));
+        } else {
+            navigate('/login');
+        }
     };
 
     return (

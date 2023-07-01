@@ -53,7 +53,7 @@
 }
 
 .pds-box {
-    min-height: 360px;
+    min-height: 260px;
 }
 
 .pruduct-info {
@@ -97,4 +97,57 @@
 .order-btn:hover {
     cursor: pointer;
     background-color: #0487cc;
+}
+
+.head {
+    padding: 16px;
+}
+
+.total-price {
+    display: flex;
+}
+
+.vnd {
+    font-size: 1.2rem;
+    align-self: flex-start;
+}
+
+.order-detail {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: flex-end;
+    height: 250px;
+    padding: 16px 0;
+}
+.detail-box {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    margin: 8px 0;
+}
+
+.detail-title {
+    font-size: 1.8rem;
+    font-weight: 400;
+    color: var(--primary-color);
+}
+
+.input-radio {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 240px;
+}
+
+.payment-method-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.detail-input {
+    border: none;
+    border-bottom: 1px solid var(--primary-color);
+    outline: none;
+    width: 240px;
 }

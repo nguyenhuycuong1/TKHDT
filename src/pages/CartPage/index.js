@@ -1,21 +1,25 @@
 import styles from './CartPage.module.scss';
 import classNames from 'classnames/bind';
 import { useEffect, useState, useCallback, useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import PDInCart from '~/components/PDInCart';
 import { AuthContext } from '~/contexts/AuthContext';
-import { getCartByUserId, getCartProductbyCartId } from '~/services/userService';
+import { PriceContext } from '~/contexts/PriceContext';
+import { createOrder, getCartByUserId, getCartProductbyCartId } from '~/services/userService';
 const cx = classNames.bind(styles);
 
 function CartPage() {
+    const { totalPrice, setTotalPrice } = useContext(PriceContext);
     const { user } = useContext(AuthContext);
     const [cartproduct, setCartproduct] = useState([]);
     const [checked, setChecked] = useState([]);
     const [productCheck, setProductCheck] = useState([]);
     const [_price, setPrice] = useState([]);
-    const [totalPrice, setTotalPrice] = useState(0);
+    const [formatPrice, setFormatPrice] = useState('');
+
     const [u, updateState] = useState();
+    const navigate = useNavigate();
     const handleForceupdateMethod = useCallback(() => updateState({}), []);
     useEffect(() => {
         const getCDitem = async () => {
@@ -60,14 +64,23 @@ function CartPage() {
             return prev + next;
         }, 0);
         setTotalPrice(totalPrice);
-    }, [_price, checked]);
+    }, [_price, checked, setTotalPrice]);
 
-    const handleClickBuyBtn = () => {
+    const handleClickBuyBtn = async () => {
         if (checked.length === 0) {
             alert('chua co san pham');
+        } else {
+            await createOrder(productCheck)
+                .then((res) => {
+                    navigate(`/order/${res.data[0].order_id}`);
+                })
+                .catch((err) => console.log(err));
         }
     };
 
+    useEffect(() => {
+        console.log(productCheck);
+    }, [productCheck]);
     useEffect(() => {
         const getTotal = () => {
             if (checked) {
@@ -81,9 +94,8 @@ function CartPage() {
                 });
             }
         };
-        console.log(checked, cartproduct);
         setProductCheck(getTotal());
-    }, [checked, cartproduct]);
+    }, [checked, cartproduct, u]);
 
     const handleQuantity = () => {
         if (productCheck) {
@@ -94,6 +106,10 @@ function CartPage() {
             return 0;
         }
     };
+    useEffect(() => {
+        setFormatPrice(Math.floor(totalPrice));
+    }, [totalPrice]);
+
     return (
         <div className={cx('wrapper', 'grid wide')}>
             <div className={cx('header', 'row')}>
@@ -142,18 +158,14 @@ function CartPage() {
                 </div>
                 <div>
                     <div className={cx('total-price')}>
-                        Tổng sản phẩm {`( ${handleQuantity()} sản phẩm ): ${totalPrice}`}
+                        Tổng sản phẩm {`( ${handleQuantity()} sản phẩm ): ${formatPrice.toLocaleString('vi-VN')}`}
                         <span className={cx('vnd')}>₫</span>
                     </div>
                 </div>
                 <div>
-                    <Link
-                        to={checked.length > 0 && '/order/sdhfjksdahji'}
-                        className={cx('buy-btn')}
-                        onClick={() => handleClickBuyBtn()}
-                    >
+                    <button className={cx('buy-btn')} onClick={() => handleClickBuyBtn()}>
                         Mua Hàng
-                    </Link>
+                    </button>
                 </div>
             </div>
         </div>

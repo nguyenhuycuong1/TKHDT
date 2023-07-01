@@ -3,7 +3,7 @@ import classNames from 'classnames/bind';
 import { useEffect, useState } from 'react';
 
 import { useParams, useNavigate } from 'react-router-dom';
-import { getAllProducts, getAllUser } from '~/services/userService';
+import { deleteProduct, deleteUser, getAllProducts, getAllUser } from '~/services/userService';
 
 const cx = classNames.bind(styles);
 const USERMENAGEMENT = 'User';
@@ -22,7 +22,7 @@ function AdminHomePage() {
         if (option === USERMENAGEMENT) {
             const getListUser = async () => {
                 await getAllUser().then((res) => {
-                    const listUser = res.result.filter((u) => u.username !== 'ADMIN001');
+                    const listUser = res.result.filter((u) => u.username !== 'ADMIN01');
                     setUser(listUser);
                 });
             };
@@ -38,6 +38,15 @@ function AdminHomePage() {
     }, [option]);
     const handleAddProduct = () => {
         navigate('/admin/Product/add');
+    };
+    const handleUpdateProduct = (product_id) => {
+        navigate(`/admin/Product/update/${product_id}`);
+    };
+    const handleDeleteUser = async (id) => {
+        await deleteUser(id).then(() => window.location.reload());
+    };
+    const handleDeleteProduct = async (product_id) => {
+        await deleteProduct(product_id).then(() => window.location.reload());
     };
     return (
         <div className={cx('wrapper')}>
@@ -77,7 +86,9 @@ function AdminHomePage() {
                                     <td>{u.phone_number}</td>
                                     <td>{u.email}</td>
                                     <td>
-                                        <button className={cx('delete-btn')}>Xóa</button>
+                                        <button className={cx('delete-btn')} onClick={() => handleDeleteUser(u.id)}>
+                                            Xóa
+                                        </button>
                                     </td>
                                 </tr>
                             );
@@ -142,9 +153,19 @@ function AdminHomePage() {
                                             <span>{p.brand_id}</span>
                                         </td>
                                         <td>
-                                            <button className={cx('update-btn')}>Sửa</button>
+                                            <button
+                                                className={cx('update-btn')}
+                                                onClick={() => handleUpdateProduct(p.product_id)}
+                                            >
+                                                Sửa
+                                            </button>
 
-                                            <button className={cx('delete-btn')}>Xóa</button>
+                                            <button
+                                                className={cx('delete-btn')}
+                                                onClick={() => handleDeleteProduct(p.product_id)}
+                                            >
+                                                Xóa
+                                            </button>
                                         </td>
                                     </tr>
                                 );

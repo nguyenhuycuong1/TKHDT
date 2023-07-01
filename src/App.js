@@ -3,6 +3,7 @@ import { Navigate } from 'react-router-dom';
 import { useContext } from 'react';
 
 import { AuthContext } from './contexts/AuthContext';
+import { PriceContextProvider } from './contexts/PriceContext';
 
 import DefaultLayout from './layouts/DefaultLayout';
 import HeaderOnly from './layouts/HeaderOnly';
@@ -16,6 +17,7 @@ import OrderPage from './pages/OrderPage';
 import ProfilePage from './pages/ProfilePage';
 import AdminHomePage from './pages/AdminHomePage';
 import AddProduct from './pages/AddProduct';
+import UpdateProduct from './pages/UpdateProduct';
 
 function App() {
     const { user } = useContext(AuthContext);
@@ -36,6 +38,10 @@ function App() {
                         </Route>
                     )}
                     {user && user.role === 'admin' && <Route path="/admin/Product/add" element={<AddProduct />} />}
+                    {user && user.role === 'admin' && (
+                        <Route path="/admin/Product/update/:product_id" element={<UpdateProduct />} />
+                    )}
+
                     <Route
                         path={'/'}
                         element={
@@ -68,7 +74,9 @@ function App() {
                         element={
                             user ? (
                                 <HeaderOnly childPage="cart">
-                                    <CartPage />
+                                    <PriceContextProvider>
+                                        <CartPage />
+                                    </PriceContextProvider>
                                 </HeaderOnly>
                             ) : (
                                 <Navigate to="/login" />
@@ -86,10 +94,12 @@ function App() {
                         }
                     />
                     <Route
-                        path="/order/:id"
+                        path="/order/:order_id"
                         element={
                             <HeaderOnly childPage="order">
-                                <OrderPage />
+                                <PriceContextProvider>
+                                    <OrderPage />
+                                </PriceContextProvider>
                             </HeaderOnly>
                         }
                     />

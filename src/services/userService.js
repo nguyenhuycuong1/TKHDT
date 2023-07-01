@@ -15,13 +15,17 @@ const forgotPassword = async (data) => {
 };
 
 const getUserbyUsername = async (username) => {
-    const user = await axios.get(API_URL + `user/?username=${username}`);
+    const user = await axios.get(API_URL + `user?username=${username}`);
     return user.data;
 };
 
 const getAllUser = async () => {
     const users = await axios.get(API_URL + 'users');
     return users.data;
+};
+
+const deleteUser = async (id) => {
+    return await axios.delete(API_URL + `${id}`);
 };
 
 const getAllProducts = async () => {
@@ -53,6 +57,10 @@ const createNewProduct = async (data) => {
     return await axios.post(API_URL + 'product', data);
 };
 
+const deleteProduct = async (product_id) => {
+    return await axios.delete(API_URL + `product/${product_id}`);
+};
+
 const addToCart = async (data) => {
     return await axios.post(API_URL + 'addtocart', data);
 };
@@ -72,10 +80,10 @@ const getCartProductbyCartId = async (cart_id) => {
     return res.data;
 };
 
-const updateQuantityCartProduct = async (data, quantity) => {
+const updateQuantityCartProduct = async (cart_id, product_id, quantity) => {
     try {
         return await axios.put(
-            API_URL + `updatefromcart/${data.cart_id}/${data.product_id}`,
+            API_URL + `updatefromcart/${cart_id}/${product_id}`,
             {
                 quantity: quantity,
             },
@@ -90,9 +98,7 @@ const updateQuantityCartProduct = async (data, quantity) => {
 
 const deleteCartProduct = async (cart_id, product_id) => {
     try {
-        return await axios.delete(API_URL + `deletefromcart/${cart_id}/${product_id}`, {
-            headers: { 'Content-Type': 'application/json' },
-        });
+        return await axios.delete(API_URL + `deletefromcart/${cart_id}/${product_id}`);
     } catch (error) {
         console.log(error);
     }
@@ -103,13 +109,28 @@ const getListProductSearch = async (product_name) => {
     return listProduct.data;
 };
 
+const createOrder = async (data) => {
+    return await axios.post(API_URL + 'order', data);
+};
+
+const getOrderById = async (order_id) => {
+    const order = await axios.get(API_URL + `order/${order_id}`);
+    return order.data;
+};
+
+const postInvoice = async (data) => {
+    return await axios.post(API_URL + 'invoice', data);
+};
+
 export {
     createAnAccount,
     loginMethod,
     forgotPassword,
     getUserbyUsername,
+    deleteUser,
     getAllProducts,
     getProductsById,
+    deleteProduct,
     getAllBrands,
     getProductsOderBy,
     getProductsByBrand,
@@ -122,4 +143,7 @@ export {
     deleteCartProduct,
     getListProductSearch,
     getAllUser,
+    createOrder,
+    getOrderById,
+    postInvoice,
 };
