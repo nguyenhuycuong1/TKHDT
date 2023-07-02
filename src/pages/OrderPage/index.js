@@ -4,7 +4,7 @@ import classNames from 'classnames/bind';
 import { useContext, useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { AuthContext } from '~/contexts/AuthContext';
-import { getUserbyUsername, getOrderById, postInvoice } from '~/services/userService';
+import { getUserbyUsername, getOrderById, postInvoice, deleteCartProduct } from '~/services/userService';
 import { PriceContext } from '~/contexts/PriceContext';
 
 const cx = classNames.bind(styles);
@@ -26,6 +26,7 @@ function OrderPage() {
         payment_method: payment,
         address: address,
         total_amount: totalPrice,
+        user_id: user.id,
     });
 
     const [formatPrice, setFormatPrice] = useState('');
@@ -55,18 +56,26 @@ function OrderPage() {
             payment_method: payment,
             address: address,
             total_amount: totalPrice,
+            user_id: user.id,
         });
-    }, [orderID, status, payment, address, totalPrice]);
+    }, [orderID, status, payment, address, totalPrice, user]);
 
     const handleSubmit = async () => {
         console.log(data);
         await postInvoice(data)
             .then(() => {
+                for (let i = 0; i < order.length; i++) {
+                    const deleteCP = async () => {
+                        await deleteCartProduct(order[i].cart_id, order[i].product_id).catch((err) => console.log(err));
+                    };
+                    deleteCP();
+                }
                 alert('Đặt hàng thành công');
                 navigate('/');
             })
             .catch((err) => console.log(err));
     };
+
     return (
         <div className={cx('wrapper', 'grid wide')}>
             <h2 className={cx('header-title')}>Thanh Toán</h2>

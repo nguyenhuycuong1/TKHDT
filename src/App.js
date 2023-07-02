@@ -18,6 +18,7 @@ import ProfilePage from './pages/ProfilePage';
 import AdminHomePage from './pages/AdminHomePage';
 import AddProduct from './pages/AddProduct';
 import UpdateProduct from './pages/UpdateProduct';
+import MyOrderPage from './pages/MyOrderPage';
 
 function App() {
     const { user } = useContext(AuthContext);
@@ -77,6 +78,18 @@ function App() {
                                     <PriceContextProvider>
                                         <CartPage />
                                     </PriceContextProvider>
+                                </HeaderOnly>
+                            ) : (
+                                <Navigate to="/login" />
+                            )
+                        }
+                    />
+                    <Route
+                        path="user/my-order"
+                        element={
+                            user ? (
+                                <HeaderOnly childPage="myOrder">
+                                    <MyOrderPage />
                                 </HeaderOnly>
                             ) : (
                                 <Navigate to="/login" />

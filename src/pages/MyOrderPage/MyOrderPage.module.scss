@@ -1,0 +1,44 @@
+.wrapper {
+    padding: 24px 16px;
+}
+
+.invoice {
+    width: 1000px;
+    background-color: white;
+    padding: 24px;
+    margin: 12px;
+}
+
+.invoice-box {
+    align-items: center;
+    justify-content: center;
+}
+
+.put-btn,
+.delete-btn {
+    margin-top: 12px;
+    width: 50%;
+    border: none;
+    padding: 6px;
+    transition: all linear 0.2s;
+}
+
+.put-btn:hover {
+    background-color: rgb(91, 91, 218);
+    color: white;
+}
+.delete-btn:hover {
+    background-color: rgb(246, 100, 100);
+    color: white;
+}
+
+.change-btn {
+    padding: 1px 4px;
+    border: 1px solid #ededed;
+    background-color: #ededed;
+    transition: all linear 0.1s;
+}
+.change-btn:hover {
+    background-color: rgb(91, 91, 218);
+    color: white;
+}

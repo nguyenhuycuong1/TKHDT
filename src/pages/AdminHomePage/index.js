@@ -3,7 +3,9 @@ import classNames from 'classnames/bind';
 import { useEffect, useState } from 'react';
 
 import { useParams, useNavigate } from 'react-router-dom';
-import { deleteProduct, deleteUser, getAllProducts, getAllUser } from '~/services/userService';
+import InfoUser from '~/components/InfoUser';
+import InvoiceItem from '~/components/InvoiceItem';
+import { deleteProduct, deleteUser, getAllInvoice, getAllProducts, getAllUser } from '~/services/userService';
 
 const cx = classNames.bind(styles);
 const USERMENAGEMENT = 'User';
@@ -13,6 +15,7 @@ const ORDERMENAGEMENT = 'Order';
 function AdminHomePage() {
     const [user, setUser] = useState([]);
     const [products, setProducts] = useState([]);
+    const [invoices, setInvoices] = useState([]);
 
     const params = useParams();
     const option = params.option;
@@ -32,10 +35,20 @@ function AdminHomePage() {
                 await getAllProducts().then((res) => setProducts(res));
             };
             getListProduct();
+        } else if (option === ORDERMENAGEMENT) {
+            const getInvoice = async () => {
+                await getAllInvoice().then((res) => setInvoices(res));
+            };
+            getInvoice();
         } else {
             return;
         }
     }, [option]);
+
+    useEffect(() => {
+        console.log(invoices);
+    }, [invoices]);
+
     const handleAddProduct = () => {
         navigate('/admin/Product/add');
     };
@@ -48,6 +61,16 @@ function AdminHomePage() {
     const handleDeleteProduct = async (product_id) => {
         await deleteProduct(product_id).then(() => window.location.reload());
     };
+    function formatDateTime(dateTimeString) {
+        const dateTime = new Date(dateTimeString);
+        const hours = ('0' + dateTime.getHours()).slice(-2);
+        const minutes = ('0' + dateTime.getMinutes()).slice(-2);
+        const day = ('0' + dateTime.getDate()).slice(-2);
+        const month = ('0' + (dateTime.getMonth() + 1)).slice(-2);
+        const year = dateTime.getFullYear();
+
+        return `${hours}h${minutes} ${day}/${month}/${year}`;
+    }
     return (
         <div className={cx('wrapper')}>
             {option === USERMENAGEMENT && (
@@ -174,6 +197,40 @@ function AdminHomePage() {
                     </table>
                 </div>
             )}
+            {option === ORDERMENAGEMENT &&
+                invoices.map((i) => {
+                    return (
+                        <div className={cx('invoice')} key={i.invoice_id}>
+                            <InfoUser userId={i.user_id} />
+                            <div>Mã đơn hàng: {i.order_id}</div>
+                            <div>Mã hóa đơn: {i.invoice_id}</div>
+                            <div>
+                                Thời gian đặt hàng:{' '}
+                                <span style={{ color: 'blue' }}>{formatDateTime(i.order_date)}</span>
+                            </div>
+                            <div>
+                                Địa chỉ giao hàng: <span style={{ color: 'red' }}>{i.address}</span>
+                            </div>
+
+                            {i.order_status && (
+                                <div>
+                                    Ghi chú: <i style={{ color: 'green' }}>{i.order_status}</i>
+                                </div>
+                            )}
+
+                            <div>
+                                Phương thức thanh toán: <span style={{ color: 'red' }}>{i.payment_method}</span>
+                            </div>
+                            <InvoiceItem data={i.order_id} />
+                            <div>
+                                Tổng thanh toán:{' '}
+                                <span style={{ fontSize: '1.8rem', color: 'red' }}>
+                                    {i.total_amount.toLocaleString('vi-VN')}
+                                </span>
+                            </div>
+                        </div>
+                    );
+                })}
         </div>
     );
 }

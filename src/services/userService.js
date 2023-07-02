@@ -19,6 +19,11 @@ const getUserbyUsername = async (username) => {
     return user.data;
 };
 
+const getUserById = async (user_id) => {
+    const user = await axios.get(API_URL + `user/${user_id}`);
+    return user.data;
+};
+
 const getAllUser = async () => {
     const users = await axios.get(API_URL + 'users');
     return users.data;
@@ -118,8 +123,32 @@ const getOrderById = async (order_id) => {
     return order.data;
 };
 
+const deleteOrder = async (order_id) => {
+    return await axios.delete(API_URL + `order/${order_id}`);
+};
+
 const postInvoice = async (data) => {
     return await axios.post(API_URL + 'invoice', data);
+};
+
+const getAllInvoice = async () => {
+    const invoices = await axios.get(API_URL + 'invoices');
+    return invoices.data;
+};
+
+const getInvoiceByUserId = async (user_id) => {
+    const invoices = await axios.get(API_URL + `invoices/${user_id}`);
+    return invoices.data;
+};
+
+const updateInvoiceAddress = async (invoice_id, data) => {
+    return await axios.put(API_URL + `invoice/${invoice_id}/address`, {
+        address: data,
+    });
+};
+
+const deleteInvoice = async (order_id) => {
+    return await axios.delete(API_URL + `invoice/${order_id}`);
 };
 
 export {
@@ -127,6 +156,7 @@ export {
     loginMethod,
     forgotPassword,
     getUserbyUsername,
+    getUserById,
     deleteUser,
     getAllProducts,
     getProductsById,
@@ -145,5 +175,10 @@ export {
     getAllUser,
     createOrder,
     getOrderById,
+    deleteOrder,
     postInvoice,
+    getAllInvoice,
+    getInvoiceByUserId,
+    deleteInvoice,
+    updateInvoiceAddress,
 };

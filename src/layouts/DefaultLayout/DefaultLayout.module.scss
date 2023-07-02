@@ -2,3 +2,82 @@
     margin-top: 64px !important;
     padding-top: 24px !important;
 }
+.footer {
+    border-top: 3px solid var(--primary-color);
+    height: 250px;
+    margin-top: 46px;
+    padding: 0 20px;
+    background-color: white;
+}
+
+.footer-col {
+    padding: 24px;
+}
+
+.footer-logo {
+    color: var(--primary-color);
+    font-size: 2.8rem;
+    font-weight: 700;
+}
+
+.footer-address {
+    margin-top: 20px;
+    font-size: 1.2rem;
+}
+
+.footer-title {
+    color: var(--primary-color);
+    padding-bottom: 20px;
+    border-bottom: solid 1px var(--primary-color);
+}
+
+.footer-about {
+    font-size: 1.2rem;
+    margin-top: 38px;
+    margin-bottom: 24px;
+}
+
+.footer-btn {
+    color: black;
+    border-radius: 100px;
+    border-color: black;
+    border: 1px solid;
+    width: 100px;
+    height: 32px;
+    font-size: 1.2rem;
+    background-color: transparent;
+    transition: all linear 0.2s;
+}
+.footer-btn:hover {
+    background-color: #038bcf;
+    color: white;
+}
+
+.col-child {
+    margin-top: 38px;
+}
+
+.help-item {
+    text-decoration: none;
+    color: black;
+    font-size: 1.2rem;
+    font-weight: 500;
+}
+.social-img {
+    margin-top: 38px;
+    margin-right: 8px;
+    width: 32px;
+    height: auto;
+}
+
+.social-wrap {
+    display: flex;
+}
+
+.footer-input {
+    margin-top: 24px;
+    width: 200px;
+    border-radius: 100px;
+    padding: 4px 8px;
+    font-size: 1.2rem;
+}

@@ -62,16 +62,19 @@ function HomgPage() {
     }, [type, brands, navigate]);
 
     return (
-        <div className={cx('wrapper', 'grid wide')}>
-            <div className={cx('product-list', 'row')}>
-                {products.map((p, index) => {
-                    return (
-                        <div key={index} className="col l-3">
-                            <ProductItem data={p} />
-                        </div>
-                    );
-                })}
+        <div className={cx('wrapper')}>
+            <div className="grid wide">
+                <div className={cx('product-list', 'row')}>
+                    {products.map((p, index) => {
+                        return (
+                            <div key={index} className="col l-3">
+                                <ProductItem data={p} />
+                            </div>
+                        );
+                    })}
+                </div>
             </div>
+            <div className={cx('footer')}></div>
         </div>
     );
 }

@@ -57,7 +57,10 @@ function Header({ childPage }) {
         navigate(`/user/profile/${user.username}`);
         setToggle(false);
     };
-
+    const handleMyOrder = () => {
+        navigate('/user/my-order');
+        setToggle(false);
+    };
     const handleSearchChange = (e) => {
         const inputValue = e.target.value;
         if (!inputValue.startsWith(' ')) {
@@ -72,7 +75,7 @@ function Header({ childPage }) {
                     <Link className={cx('logo')} to={'/'}>
                         <span>LAPTOP</span>
                     </Link>
-                    {!childPage && (childPage !== 'cart' || childPage !== 'order') && (
+                    {!childPage && (childPage !== 'cart' || childPage !== 'order' || childPage !== 'myOrder') && (
                         <div className={cx('search-group')}>
                             <input
                                 className={cx('search-input')}
@@ -108,6 +111,9 @@ function Header({ childPage }) {
                             <div className={cx('popper')}>
                                 <div className={cx('wrap')} onClick={() => handleProfile()}>
                                     <span>Profile</span>
+                                </div>
+                                <div className={cx('wrap')} onClick={() => handleMyOrder()}>
+                                    <span>My Order</span>
                                 </div>
                                 <div className={cx('wrap')} onClick={() => handleLogout()}>
                                     <span>Logout</span>
